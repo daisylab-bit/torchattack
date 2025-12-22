@@ -26,15 +26,11 @@ Repository = "https://github.com/spencerwooo/torchattack"
 Documentation = "https://github.com/spencerwooo/torchattack/blob/main/README.md"
 
 [project.optional-dependencies]
-kornia = ["kornia>=0.8.1"]
-scipy = ["scipy>=1.15.3"]
-full = [
-    "kornia>=0.8.1", # MuMoDIG
-    "scipy>=1.15.3", # TI-FGSM
-]
+kornia = ["kornia>=0.8.1"] # MuMoDIG
+scipy = ["scipy>=1.15.3"]  # TI-FGSM
 
 [dependency-groups]
-dev = ["mypy>=1.15.0", "rich>=13.9.4", "timm>=1.0.14"]
+dev = ["rich>=13.9.4", "timm>=1.0.14", "ty>=0.0.5"]
 test = ["pytest-cov>=6.0.0", "pytest>=8.3.4"]
 docs = [
     "mkdocs-awesome-pages-plugin>=2.10.1",
@@ -63,12 +59,9 @@ ignore = ["E501", "B905"]
 [tool.ruff.format]
 quote-style = "single"
 
-[tool.mypy]
-no_implicit_optional = true
-check_untyped_defs = true
-ignore_missing_imports = true  # Used as torchvision does not ship type hints
-disallow_any_unimported = true
-disallow_untyped_defs = true
-warn_unused_ignores = true
-warn_return_any = true
-warn_unreachable = true
+[tool.ty.rules]
+unresolved-import = "ignore"          # Used as torchvision does not ship type hints
+unresolved-attribute = "ignore"
+possibly-missing-import = "ignore"
+possibly-missing-attribute = "ignore"
+unused-ignore-comment = "warn"

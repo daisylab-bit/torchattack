@@ -122,7 +122,7 @@ class DANAA(Attack):
             x_t = x_t + self.lr * x_grad.sign()
 
             # Aggregate the gradients w.r.t. the intermediate features
-            agg_grad += self.mid_grad[0].detach()  # type: ignore[assignment]
+            agg_grad += self.mid_grad[0].detach()
 
         # Normalize the aggregated gradients
         agg_grad = -agg_grad / torch.sqrt(
@@ -140,7 +140,7 @@ class DANAA(Attack):
             _ = self.model(self.normalize(x + delta))
 
             # Calculate the loss using DANAA attribution
-            loss = self._get_danaa_loss(self.mid_output, y_base, agg_grad)  # type: ignore[arg-type]
+            loss = self._get_danaa_loss(self.mid_output, y_base, agg_grad)
             loss.backward()
 
             if delta.grad is None:

@@ -22,7 +22,10 @@ class FoolingRateMeter:
         self.targeted_count = torch.tensor(0)
 
     def update(
-        self, labels: torch.Tensor, cln_logits: torch.Tensor, adv_logits: torch.Tensor
+        self,
+        labels: torch.Tensor | tuple[torch.Tensor, torch.Tensor],
+        cln_logits: torch.Tensor,
+        adv_logits: torch.Tensor,
     ) -> None:
         """Update metric tracker during attack progress.
 

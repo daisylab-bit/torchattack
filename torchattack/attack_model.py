@@ -34,7 +34,7 @@ class TvTransform(nn.Module):
         antialias: Whether to apply antialiasing during resizing.
     """
 
-    def __init__(  # type: ignore[no-any-unimported]
+    def __init__(
         self,
         crop_size: list[int],
         resize_size: list[int],
@@ -51,7 +51,7 @@ class TvTransform(nn.Module):
         self.interpolation = interpolation
         self.antialias = antialias
 
-    def forward(self, x: Image.Image | torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = f.resize(
             x,
             self.resize_size,
@@ -62,7 +62,7 @@ class TvTransform(nn.Module):
         if not isinstance(x, torch.Tensor):
             x = f.pil_to_tensor(x)
         x = f.convert_image_dtype(x, torch.float)
-        return x  # type: ignore[return-value]
+        return x
 
     def __repr__(self) -> str:
         return (
@@ -75,7 +75,7 @@ class TvTransform(nn.Module):
 
 
 @dataclass
-class AttackModelMeta:  # type: ignore[no-any-unimported]
+class AttackModelMeta:
     """AttackModelMeta class for handling image preprocessing parameters.
 
     Note:
@@ -95,7 +95,7 @@ class AttackModelMeta:  # type: ignore[no-any-unimported]
 
     resize_size: int
     crop_size: int
-    interpolation: f.InterpolationMode = f.InterpolationMode.BILINEAR  # type: ignore[no-any-unimported]
+    interpolation: f.InterpolationMode = f.InterpolationMode.BILINEAR
     antialias: bool = True
     mean: tuple[float, ...] = (0.485, 0.456, 0.406)
     std: tuple[float, ...] = (0.229, 0.224, 0.225)
@@ -154,7 +154,7 @@ class AttackModelMeta:  # type: ignore[no-any-unimported]
         interpolation = cls.interpolation
         antialias = cls.antialias
 
-        for tfs in transform.transforms:
+        for tfs in transform.transforms:  # ty:ignore[not-iterable]
             if isinstance(tfs, t.CenterCrop):
                 cs = tfs.size
                 crop_size = cs[0] if isinstance(cs, (list, tuple)) else cs
@@ -363,7 +363,7 @@ class AttackModel:
                 if not isinstance(x, torch.Tensor):
                     x = f.pil_to_tensor(x)
                 x = f.convert_image_dtype(x, torch.float)
-                return x  # type: ignore[return-value]
+                return x
 
             def __repr__(self) -> str:
                 return f'{self.__class__.__name__}()'
@@ -378,7 +378,7 @@ class AttackModel:
                 )
             ]
         tfl += [MaybePIlToTensor()]
-        return t.Compose(tfl)  # type: ignore[no-any-return]
+        return t.Compose(tfl)
 
     def __call__(self, x: torch.Tensor) -> torch.Tensor:
         return self.forward(x)

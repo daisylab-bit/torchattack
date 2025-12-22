@@ -196,7 +196,7 @@ class MuMoDIG(Attack):
         # Choose one augmentation at random
         transforms = [random_affine, random_resize_and_pad]
         idx = torch.randint(len(transforms), (1,)).item()
-        aug_x: torch.Tensor = transforms[int(idx)](x)  # type: ignore[operator]
+        aug_x: torch.Tensor = transforms[int(idx)](x)
         return aug_x
 
     def forward(self, x: torch.Tensor, y: torch.Tensor) -> torch.Tensor:

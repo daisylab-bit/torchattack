@@ -59,7 +59,7 @@ def run_attack(
 
     if attack_args is None:
         attack_args = {}
-    is_targeted = attack_args.get('targeted', False)
+    is_targeted: bool = attack_args.get('targeted', False)
 
     # Setup model
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -74,7 +74,7 @@ def run_attack(
         max_samples=max_samples,
         return_target_label=is_targeted,
     )
-    dataloader = track(dataloader, description='Attacking')  # type: ignore
+    dataloader = track(dataloader, description='Attacking')
 
     # Set up attack and trackers
     frm = FoolingRateMeter(is_targeted)

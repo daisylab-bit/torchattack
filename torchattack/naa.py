@@ -109,10 +109,10 @@ class NAA(Attack):
             loss.backward()
 
             # Accumulate gradients
-            agg_grad += self.mid_grad[0].detach()  # type: ignore[assignment]
+            agg_grad += self.mid_grad[0].detach()
 
         # Average the gradients
-        agg_grad /= self.num_ens  # type: ignore[assignment]
+        agg_grad /= self.num_ens
         hb.remove()
 
         # Get initial feature map

@@ -11,7 +11,7 @@ from torchattack.attack_model import AttackModel
 try:
     import scipy.stats as st
 except ImportError:
-    st = None
+    st = None  # ty:ignore[invalid-assignment]
 
 
 @register_attack()

@@ -169,7 +169,7 @@ class RWAugSearch:
     def __call__(self, img: torch.Tensor) -> torch.Tensor:
         assert len(self.ops_indices) == self.ops_num
         for idx in self.ops_indices:
-            img = AUG_OPS[idx](img)  # type: ignore
+            img = AUG_OPS[idx](img)
         return img
 
 
@@ -194,11 +194,11 @@ def horizontal_flip(x: torch.Tensor) -> torch.Tensor:
 
 
 def rotate45(x: torch.Tensor) -> torch.Tensor:
-    return t.functional.rotate(img=x, angle=45)  # type: ignore
+    return t.functional.rotate(img=x, angle=45)
 
 
 def rotate135(x: torch.Tensor) -> torch.Tensor:
-    return t.functional.rotate(img=x, angle=135)  # type: ignore
+    return t.functional.rotate(img=x, angle=135)
 
 
 def rotate90(x: torch.Tensor) -> torch.Tensor:
@@ -275,7 +275,12 @@ class Dim:
         pad_left = torch.randint(low=0, high=w_rem.item(), size=(1,), dtype=torch.int32)
         pad_right = w_rem - pad_left
 
-        pad = [pad_left.item(), pad_right.item(), pad_top.item(), pad_bottom.item()]
+        pad = [
+            int(pad_left.item()),
+            int(pad_right.item()),
+            int(pad_top.item()),
+            int(pad_bottom.item()),
+        ]
         padded = f.pad(rescaled, pad=pad, mode='constant', value=0)
 
         # resize the image back to img_size
@@ -427,7 +432,7 @@ class SSM:
 
         mat_v = 2 * mat_v.view(*x_shape)
 
-        return mat_v  # type: ignore
+        return mat_v
 
     def idct(self, mat_x: torch.Tensor, norm: str | None = None) -> torch.Tensor:
         x_shape = mat_x.shape
@@ -461,7 +466,7 @@ class SSM:
         x[:, ::2] += v[:, : n - (n // 2)]
         x[:, 1::2] += v.flip([1])[:, : n // 2]
 
-        return x.view(*x_shape).real  # type: ignore
+        return x.view(*x_shape).real
 
     def dct_2d(self, x: torch.Tensor, norm: str | None = None) -> torch.Tensor:
         x1 = self.dct(x, norm=norm)

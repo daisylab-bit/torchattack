@@ -18,13 +18,12 @@ class GeneratorWeightsEnum(Enum):
     ) -> Union['GeneratorWeightsEnum', None]:
         if obj is not None:
             if type(obj) is str:
-                obj = cls[obj.replace(cls.__name__ + '.', '')]
+                return cls[obj.replace(cls.__name__ + '.', '')]
             elif not isinstance(obj, cls):
                 raise TypeError(
                     f'Invalid Weight class provided; expected {cls.__name__} '
                     f'but received {obj.__class__.__name__}.'
                 )
-        return obj
 
     def get_state_dict(self, *args: Any, **kwargs: Any) -> Mapping[str, Any]:
         return load_state_dict_from_url(self.url, *args, **kwargs)

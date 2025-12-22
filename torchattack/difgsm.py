@@ -156,7 +156,12 @@ def input_diversity(
     pad_left = torch.randint(low=0, high=w_rem.item(), size=(1,), dtype=torch.int32)
     pad_right = w_rem - pad_left
 
-    pad = [pad_left.item(), pad_right.item(), pad_top.item(), pad_bottom.item()]
+    pad = [
+        int(pad_left.item()),
+        int(pad_right.item()),
+        int(pad_top.item()),
+        int(pad_bottom.item()),
+    ]
     padded = f.pad(rescaled, pad=pad, mode='constant', value=0)
 
     return padded

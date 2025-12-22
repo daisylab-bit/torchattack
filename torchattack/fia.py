@@ -110,7 +110,7 @@ class FIA(Attack):
             loss.backward()
 
             # Accumulate gradients
-            agg_grad += self.mid_grad[0].detach()  # type: ignore
+            agg_grad += self.mid_grad[0].detach()
 
         # for batch_i in range(x.shape[0]):
         #     agg_grad[batch_i] /= agg_grad[batch_i].norm(p=2)

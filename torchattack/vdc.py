@@ -88,6 +88,7 @@ class VDC(Attack):
         # Global hooks and attack stage state for VDC
         self.stage: list[torch.Tensor] = []
         self.hooks: list[torch.utils.hooks.RemovableHandle] = []
+        self.norm_list = torch.empty(0)
 
         assert self.sample_num_batches <= self.max_num_batches
 
