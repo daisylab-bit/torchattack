@@ -16,15 +16,15 @@ class AttackCategory(Enum):
 
     @classmethod
     def verify(cls, obj: Union[str, 'AttackCategory']) -> 'AttackCategory':
-        if obj is not None:
-            if type(obj) is str:
-                obj = cls[obj.replace(cls.__name__ + '.', '')]
-            elif not isinstance(obj, cls):
-                raise TypeError(
-                    f'Invalid AttackCategory class provided; expected {cls.__name__} '
-                    f'but received {obj.__class__.__name__}.'
-                )
-        return obj
+        if type(obj) is str:
+            return cls[obj.replace(cls.__name__ + '.', '')]
+        elif isinstance(obj, cls):
+            return obj
+        else:
+            raise TypeError(
+                f'Invalid AttackCategory class provided; expected {cls.__name__} '
+                f'but received {obj.__class__.__name__}.'
+            )
 
 
 ATTACK_REGISTRY: dict[str, Type['Attack']] = {}
@@ -128,6 +128,7 @@ class Attack(ABC):
             'hooks',  # PNAPatchOut, TGR, VDC
             'sub_basis',  # GeoDA
             'generator',  # BIA, CDA, LTP
+            'lbq',  # MuMoDIG
         ]
         for attr in eq_name_attrs:
             if not (hasattr(self, attr) and hasattr(other, attr)):
