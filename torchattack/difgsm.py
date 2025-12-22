@@ -145,23 +145,18 @@ def input_diversity(
         img_size = img_resize
         img_resize = x.shape[-1]
 
-    rnd = torch.randint(low=img_size, high=img_resize, size=(1,), dtype=torch.int32)
+    rnd = int(torch.randint(img_size, img_resize, size=(1,)).item())
     rescaled = f.interpolate(x, size=[rnd, rnd], mode='nearest')
 
-    h_rem = img_resize - rnd
-    w_rem = img_resize - rnd
+    h_rem = int(img_resize - rnd)
+    w_rem = int(img_resize - rnd)
 
-    pad_top = torch.randint(low=0, high=h_rem.item(), size=(1,), dtype=torch.int32)
+    pad_top = int(torch.randint(0, h_rem, size=(1,)).item())
     pad_bottom = h_rem - pad_top
-    pad_left = torch.randint(low=0, high=w_rem.item(), size=(1,), dtype=torch.int32)
+    pad_left = int(torch.randint(0, w_rem, size=(1,)).item())
     pad_right = w_rem - pad_left
 
-    pad = [
-        int(pad_left.item()),
-        int(pad_right.item()),
-        int(pad_top.item()),
-        int(pad_bottom.item()),
-    ]
+    pad = [pad_left, pad_right, pad_top, pad_bottom]
     padded = f.pad(rescaled, pad=pad, mode='constant', value=0)
 
     return padded

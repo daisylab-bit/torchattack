@@ -174,7 +174,7 @@ class MuMoDIG(Attack):
             pad to square `dim` * `dim`, then resize back to original.
             """
             orig = img.shape[-1]
-            target = torch.randint(min(orig, dim), max(orig, dim), (1,)).item()
+            target = int(torch.randint(min(orig, dim), max(orig, dim), (1,)).item())
             resized = f.interpolate(
                 img, size=(target, target), mode='bilinear', align_corners=False
             )

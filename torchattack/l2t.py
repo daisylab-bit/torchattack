@@ -257,30 +257,22 @@ class Dim:
         img_resize = int(img_size * self.resize_rate)
 
         # resize the input image to random size
-        rnd = torch.randint(
-            low=min(img_size, img_resize),
-            high=max(img_size, img_resize),
-            size=(1,),
-            dtype=torch.int32,
-        )
+        rnd = int(torch.randint(
+            min(img_size, img_resize), max(img_size, img_resize), size=(1,)
+        ).item())
         rescaled = f.interpolate(
             x, size=[rnd, rnd], mode='bilinear', align_corners=False
         )
 
         # randomly add padding
-        h_rem = img_resize - rnd
-        w_rem = img_resize - rnd
-        pad_top = torch.randint(low=0, high=h_rem.item(), size=(1,), dtype=torch.int32)
+        h_rem = int(img_resize - rnd)
+        w_rem = int(img_resize - rnd)
+        pad_top = int(torch.randint(0, h_rem, size=(1,)))
         pad_bottom = h_rem - pad_top
-        pad_left = torch.randint(low=0, high=w_rem.item(), size=(1,), dtype=torch.int32)
+        pad_left = int(torch.randint(0, w_rem, size=(1,)).item())
         pad_right = w_rem - pad_left
 
-        pad = [
-            int(pad_left.item()),
-            int(pad_right.item()),
-            int(pad_top.item()),
-            int(pad_bottom.item()),
-        ]
+        pad = [pad_left, pad_right, pad_top, pad_bottom]
         padded = f.pad(rescaled, pad=pad, mode='constant', value=0)
 
         # resize the image back to img_size
